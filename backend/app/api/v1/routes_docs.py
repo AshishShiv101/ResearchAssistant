@@ -1,26 +1,13 @@
-from fastapi import APIRouter, UploadFile, File
-import os
-import shutil
+from fastapi import APIRouter, UploadFile, File, HTTPException
+from app.core.ingestion import ingest_document
 
 router = APIRouter(prefix="/docs", tags=["Documents"])
 
-UPLOAD_DIR = "./uploaded_docs"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-
 @router.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
-    """
-    Upload a research document (PDF, DOCX, TXT, etc.)
-    For now, just saves file to disk. Later -> ingestion pipeline.
-    """
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    return {"filename": file.filename, "path": file_path, "status": "uploaded"}
-
-@router.get("/list")
-async def list_documents():
-    """List all uploaded documents"""
-    files = os.listdir(UPLOAD_DIR)
-    return {"documents": files}
+    try:
+        file_bytes = await file.read()
+        result = ingest_document(file_bytes, file.filename, file.content_type)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

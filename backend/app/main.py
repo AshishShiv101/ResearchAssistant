@@ -1,3 +1,4 @@
+# app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import routes_admin, routes_chat, routes_docs
@@ -9,20 +10,21 @@ app = FastAPI(
     description="Research Assistant Backend",
 )
 
-# CORS
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # frontend
+    allow_origins=["http://localhost:3000"],  # frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Register routes
-app.include_router(routes_admin.router)
-app.include_router(routes_chat.router)
-app.include_router(routes_docs.router)
+# Register routers with /api/v1 prefix
+app.include_router(routes_admin.router, prefix="/api/v1")
+app.include_router(routes_chat.router, prefix="/api/v1")
+app.include_router(routes_docs.router, prefix="/api/v1")
 
+# Root endpoint
 @app.get("/")
 def root():
     return {"status": "ok", "message": "Welcome to Research Assistant API"}

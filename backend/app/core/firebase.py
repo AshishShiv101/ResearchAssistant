@@ -16,7 +16,7 @@ cred = credentials.Certificate(settings.firebase_key_path)
 # Only initialize once (important for FastAPI reloads)
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred, {
-        "storageBucket": f"{settings.project_id}.appspot.com"
+        "storageBucket": f"{settings.firebase_project_id}.appspot.com"
     })
 
 # Firestore client

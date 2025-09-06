@@ -1,5 +1,6 @@
+# app/api/v1/routes_chat.py
 from fastapi import APIRouter, Query
-from app.core.embeddings import search_embeddings
+from app.services.embeddings import search_embeddings
 import requests
 from app.core.config import settings
 
@@ -7,6 +8,8 @@ router = APIRouter(prefix="/chat", tags=["Chat"])
 
 @router.get("/ask")
 def ask(query: str = Query(..., description="User's research question")):
+    query = query.strip()  # remove any trailing newline or whitespace
+
     # Step 1: Retrieve relevant docs
     results = search_embeddings(query, top_k=3)
     context = "\n\n".join([r[1]["text"] for r in results])

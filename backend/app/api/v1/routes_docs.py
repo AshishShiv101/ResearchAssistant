@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from app.core.ingestion import ingest_document
+from app.services.ingestion import ingest_document
 
 router = APIRouter(prefix="/docs", tags=["Documents"])
 

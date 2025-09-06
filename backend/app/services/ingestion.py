@@ -3,7 +3,7 @@ import uuid
 import fitz               # PyMuPDF for PDFs
 import docx               # python-docx for Word
 from app.core.firebase import get_firestore, get_bucket
-from app.core.embeddings import store_embedding
+from app.services.embeddings import store_embedding
 
 db = get_firestore()
 bucket = get_bucket()

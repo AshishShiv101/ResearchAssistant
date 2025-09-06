@@ -1,6 +1,6 @@
 from typing import List, Dict
-from app.core.embeddings import search_embeddings
-from app.core.model_service import ModelService
+from app.services.embeddings import search_embeddings
+from app.services.model_service import ModelService
 
 model_service = ModelService()
 

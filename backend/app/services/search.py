@@ -1,6 +1,6 @@
 import numpy as np
 from app.core.firebase import get_firestore
-from app.core.embeddings import embed_text
+from app.services.embeddings import embed_text
 
 db = get_firestore()
 
